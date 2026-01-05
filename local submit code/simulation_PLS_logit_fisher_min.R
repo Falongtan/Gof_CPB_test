@@ -13,7 +13,8 @@ PLS_logit_parallel <- function(p,n,a,c_h,pho,example,rpgrp_switch){
   library(parallel)
   library(iterators)
   library(doParallel)
-  
+  library(GRPtests)	
+	
   s <- 1000
   mu <- rep(0, p)
   if(pho == 0){
@@ -306,7 +307,7 @@ rpgrp_run <- FALSE
 ####if needed to compare with rp and grp :rpgrp_run <- TRUE
 
 r <- 7
-compar_lm_result <- matrix(0,nrow = r*length(pho)*length(a)*length(c_h),ncol = length(p)+5)
+compar_logit_result <- matrix(0,nrow = r*length(pho)*length(a)*length(c_h),ncol = length(p)+5)
 for(ll in 1:length(example)){
   for (kk in 1:length(pho)){
     for (ii in 1:length(a)){
@@ -318,13 +319,13 @@ for(ll in 1:length(example)){
           #index
           base_index <- r * ((ll-1)*length(example)*length(a)*length(c_h) + (kk-1)*length(a)*length(c_h) + (ii-1)*length(c_h) + (cc-1) ) 
           #result
-          compar_lm_result[base_index + 1, jj]  <- result_pls$PLS_fisher1_power
-          compar_lm_result[base_index + 2, jj]  <- result_pls$PLS_fisher2_power
-          compar_lm_result[base_index + 3, jj]  <- result_pls$PLS_fisher_power
-          compar_lm_result[base_index + 4, jj]  <- result_pls$PLS_min1_power
-          compar_lm_result[base_index + 5, jj]  <- result_pls$PLS_min2_power
-          compar_lm_result[base_index + 6, jj]  <- result_pls$PLS_min_power
-          compar_lm_result[base_index + 7, jj]  <- result_pls$PLS_grp_power
+          compar_logit_result[base_index + 1, jj]  <- result_pls$PLS_fisher1_power
+          compar_logit_result[base_index + 2, jj]  <- result_pls$PLS_fisher2_power
+          compar_logit_result[base_index + 3, jj]  <- result_pls$PLS_fisher_power
+          compar_logit_result[base_index + 4, jj]  <- result_pls$PLS_min1_power
+          compar_logit_result[base_index + 5, jj]  <- result_pls$PLS_min2_power
+          compar_logit_result[base_index + 6, jj]  <- result_pls$PLS_min_power
+          compar_logit_result[base_index + 7, jj]  <- result_pls$PLS_grp_power
           
           t4 <- Sys.time()
           cat("example = ",example[ll],"p = ", p[jj],", n = ", n, ", a = ", a[ii] ,", c_h = ", c_h[cc], ", pho = ", pho[kk],
@@ -338,7 +339,7 @@ for(ll in 1:length(example)){
               ", time:",t4-t3, "\n")
           
           ##the label with respect to result
-          compar_lm_result[base_index + 1:r, (length(p)+1):(length(p)+5)] <- 
+          compar_logit_result[base_index + 1:r, (length(p)+1):(length(p)+5)] <- 
             matrix(c(example[ll],n, a[ii], pho[kk], c_h[cc]), nrow = r, ncol = 5, byrow = TRUE)
         }
       }
@@ -347,4 +348,4 @@ for(ll in 1:length(example)){
 }
 outcome.name <- paste("PLS_logistic_fisher_min_H2", example, ".txt", sep="")
 
-write.table(compar_lm_result,file = outcome.name,sep = "  ", row.names = FALSE, col.names = FALSE, eol = "\r\n")
+write.table(compar_logit_result,file = outcome.name,sep = "  ", row.names = FALSE, col.names = FALSE, eol = "\r\n")
