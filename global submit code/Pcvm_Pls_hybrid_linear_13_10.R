@@ -392,6 +392,7 @@ Pcvm_Pls_hybrid_linear <- function(p,n,a,pho){
   )
 }
 
+# p<n1/log(n1)
 Pcvm_Pls_hybrid_linear <- function(p,n,a,pho){ 
   library(MASS)
   library(glmnet)
@@ -444,7 +445,7 @@ Pcvm_Pls_hybrid_linear <- function(p,n,a,pho){
         n2 <- nrow(x2)
         
         # residuals and beta_0 projections based on lasso and data x1 y1
-        if(p>n1/log(n1)){  
+        if(p<n1/log(n1)){  
           
           sec_model1 <- glm(y1 ~ x1, family = gaussian()) 
           coef_full <- unname(sec_model1$coefficients)

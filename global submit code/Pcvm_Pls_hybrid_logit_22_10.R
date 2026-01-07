@@ -490,6 +490,7 @@ Pcvm_Pls_hybrid_logit <- function(p,n,a,pho){
   )
 }
 
+# p<n1/log(n1)
 Pcvm_Pls_hybrid_logit <- function(p,n,a,pho){
   library(MASS)
   library(glmnet)
