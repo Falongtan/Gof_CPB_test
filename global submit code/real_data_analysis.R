@@ -309,11 +309,7 @@ Pcvm_Pls_hybrid_linear_test <- function(x,y){
     }
     
     pval_matrix_PLS <- cbind(pval_matrix1_PLS, pval_matrix2_PLS)
-    pval_pls_num <- pro1_pls_num + pro2_pls_num
-    
-    # pval_cauchy1_PLS <- 1- pcauchy(mean(tan((0.5-pval_matrix1_PLS[1:pro2_pls_num])*pi)))  # cauchy combination based on x1 y1
-    # pval_cauchy2_PLS <- 1- pcauchy(mean(tan((0.5-pval_matrix2_PLS[1:pro1_pls_num])*pi)))  # cauchy combination based on x1 y1
-    # pval_cauchy_PLS  <- 1- pcauchy(mean(tan((0.5-pval_matrix_PLS[1:pval_pls_num])*pi)))   # cauchy combination based on x y
+    pval_pls_num <- pro1_pls_num + pro2_pls_num 
   }
   
   # pval_cauchy_hybrid 
@@ -366,13 +362,7 @@ Pcvm_Pls_hybrid_linear_test <- function(x,y){
     pval_cauchy1_PLS <- 1- pcauchy(mean(tan((0.5-pval_matrix1_PLS[1:pro2_pls_num])*pi)))  # cauchy combination based on x1 y1
     pval_cauchy2_PLS <- 1- pcauchy(mean(tan((0.5-pval_matrix2_PLS[1:pro1_pls_num])*pi)))  # cauchy combination based on x1 y1
     pval_cauchy_PLS  <- 1- pcauchy(mean(tan((0.5-pval_matrix_PLS[1:pval_pls_num])*pi)))   # cauchy combination based on x y
-  
-    # pval_min1_PLS <-   min(pval_matrix1_PLS)<=1-(0.95)^(1/pro2_pls_num) 
-    # pval_min2_PLS <-  min(pval_matrix2_PLS)<=1-(0.95)^(1/pro1_pls_num)
-    # pval_min_m <- cbind(1 - (1 - min(pval_matrix1_PLS))^pro2_pls_num, 1 - (1 - min(pval_matrix2_PLS))^pro1_pls_num) 
-    # pval_min_cauchy_PLS <- 1- pcauchy(mean(tan((0.5-pval_min_m)*pi))) 
-    
-    
+ 
     pval_min1_PLS <- 1 - (1 - min(pval_matrix1_PLS))^pro2_pls_num
     pval_min2_PLS <- 1 - (1 - min(pval_matrix2_PLS))^pro1_pls_num
     pval_min_m <- cbind(pval_min1_PLS, pval_min2_PLS) 
@@ -735,10 +725,7 @@ Pcvm_Pls_hybrid_logit_test <- function(x,y){
   
   pval_matrix_PCvm <- cbind(pval_matrix1_PCvm, pval_matrix2_PCvm)
   pval_num <- ncol(pval_matrix_PCvm)
-  # pval_cauchy1_PCvm <- 1- pcauchy(mean(tan((0.5-pval_matrix1_PCvm[1:pro2_num+1])*pi)))            # cauchy combination based on x1 y1
-  # pval_cauchy2_PCvm <- 1- pcauchy(mean(tan((0.5-pval_matrix2_PCvm[1:pro1_num+1])*pi)))            # cauchy combination based on x2 y2
-  # pval_cauchy_PCvm  <- 1- pcauchy(mean(tan((0.5-pval_matrix_PCvm[1:pval_num])*pi)))               # cauchy combination based on x y
-  
+ 
   pval_cauchy1_PCvm <- 1- pcauchy(mean(tan((0.5-pval_matrix1_PCvm)*pi)))            # cauchy combination based on x1 y1
   pval_cauchy2_PCvm <- 1- pcauchy(mean(tan((0.5-pval_matrix2_PCvm)*pi)))            # cauchy combination based on x2 y2
   pval_cauchy_PCvm  <- 1- pcauchy(mean(tan((0.5-pval_matrix_PCvm)*pi)))  
@@ -840,11 +827,6 @@ Pcvm_Pls_hybrid_logit_test <- function(x,y){
     pval_cauchy2_PLS <- 1- pcauchy(mean(tan((0.5-pval_matrix2_PLS[1:pro1_num_pls])*pi)))            # cauchy combination based on x1 y1
     pval_cauchy_PLS  <- 1- pcauchy(mean(tan((0.5-pval_matrix_PLS[1:pval_num_pls])*pi)))             # cauchy combination based on x y
  
-    # pval_min1_PLS <-   min(pval_matrix1_PLS)<=1-(0.95)^(1/pro2_num_pls) 
-    # pval_min2_PLS <-  min(pval_matrix2_PLS)<=1-(0.95)^(1/pro1_num_pls)
-    # pval_min_m <- cbind(1 - (1 - min(pval_matrix1_PLS))^pro2_num_pls, 1 - (1 - min(pval_matrix2_PLS))^pro1_num_pls) 
-    # pval_min_cauchy_PLS <- 1- pcauchy(mean(tan((0.5-pval_min_m)*pi))) 
-    
     pval_min1_PLS <- 1 - (1 - min(pval_matrix1_PLS))^pro2_num_pls
     pval_min2_PLS <- 1 - (1 - min(pval_matrix2_PLS))^pro1_num_pls
     pval_min_m <- cbind(pval_min1_PLS, pval_min2_PLS) 
@@ -1044,13 +1026,7 @@ cv_compare_models <- function(x, y,
         prob <- as.numeric(predict(cvfit, newx=as.matrix(x_test), s="lambda.min", type="response"))
         auc <- tryCatch(auc(y_test, prob), error=function(e) NA)
         pred <- ifelse(prob>0.5,1,0)
-        acc <- mean(pred==y_test)
-        # prob <- as.numeric(predict(cvfit, newx=as.matrix(x_train), s="lambda.min", type="response"))
-        # auc <- tryCatch(auc(y_train, prob), error=function(e) NA)
-        # pred <- ifelse(prob>0.5,1,0)
-        # acc <- mean(pred==y_train)  
-        # coef_vector <- as.matrix(coef(cvfit, s = "lambda.min"))
-        # sum(coef_vector != 0) 
+        acc <- mean(pred==y_test) 
         fold_glmnet[k, ] <- c(auc, acc)
       }
     }
